@@ -29,6 +29,6 @@ console.log('connected to MongoDB server');
 db.collection('Users').findOneAndDelete({_id: new ObjectID('593da81989c7ae21a45d9d6f')}).then((results)=>{
 	console.log(JSON.stringify(results, undefined, 2));
 });
-//command
+
 //db/close();
 });
