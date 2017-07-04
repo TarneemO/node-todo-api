@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 
 //creating structure for your collection:
 //creating model:
-var Todo = mongoose.model('Todo', {
+var Todo = mongoose.model('todo', {
 text: {
 type: String,
 required: true,
