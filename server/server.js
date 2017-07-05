@@ -66,7 +66,7 @@ Todo.findByIdAndRemove(idv).then((todo) =>{
 	if (!{todo}){
 		return res.status(404).send();
 	}
-
+res.send({todo});
 }).catch((e) =>{res.status(400).send();});
 //if not found, send 404
 //if doc exist and successful, send 200
