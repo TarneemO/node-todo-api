@@ -7,6 +7,8 @@ var {Todo} = require('./models/todo');
 var {Users} = require('./models/users');
 
 var app = express();
+//for heroku setup:
+var port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.post('/todos', (req, res)=>{
@@ -52,8 +54,8 @@ Todo.findById(id).then((todo) =>{
 //success case: send it back, if no todo (as it is not found): send 404 with empty
 //error case: send 400 - send empty 
 });
-app.listen(3000, ()=>{
-	console.log('started on port 3000');
+app.listen(port, ()=>{
+	console.log(`started on port ${port}`);
 });
 
 module.exports = {app};
