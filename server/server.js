@@ -1,6 +1,7 @@
+const _= require('lodash');
 const {ObjectID} = require('mongodb');
-var express = require('express');
-var bodyParser = require('body-parser');
+const express = require('express');
+const bodyParser = require('body-parser');
 
 var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
@@ -70,6 +71,34 @@ res.send({todo});
 }).catch((e) =>{res.status(400).send();});
 //if not found, send 404
 //if doc exist and successful, send 200
+});
+
+//to update resource route:
+app.patch('/todos/:id', (req, res) =>{
+	var id = req.params.id;
+   //using lodash to save or load update to body variable, as we don't want to allow user to update anything they want
+	var body = _.pick(req.body, ['text', 'completed']); //todo doc to be updated
+if(!ObjectID.isValid(id)){
+	return res.status(404).send();}
+//this part to update completed:
+	if (_.isBoolean(body.completed) && body.completed){
+		//if it is true
+		body.completedAt = new Date().getTime();
+	}else{
+    //if it is not boolean
+    body.completed = false;
+    body.completedAt = null;
+	}
+
+	//query to find specific todo doc by id
+	Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo) =>{
+   if(!todo){
+   	return res.status(404).send();
+   }
+   res.send({todo});
+	}).catch((e) =>{
+		res.status(400).send();
+	});
 });
 
 app.listen(port, ()=>{
