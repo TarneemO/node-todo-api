@@ -54,6 +54,24 @@ Todo.findById(id).then((todo) =>{
 //success case: send it back, if no todo (as it is not found): send 404 with empty
 //error case: send 400 - send empty 
 });
+//to create delete route:
+app.delete('/todos/:id', (req, res) =>{
+	//get id
+	var idv = req.params.id;
+//validation and send 404 for error
+if(!ObjectID.isValid(idv)){
+	return res.status(404).send();}
+//function of removebyid, for error respose to send 400 with empty body
+Todo.findByIdAndRemove(idv).then((todo) =>{
+	if (!{todo}){
+		return res.status(404).send();
+	}
+
+}).catch((e) =>{res.status(400).send();});
+//if not found, send 404
+//if doc exist and successful, send 200
+});
+
 app.listen(port, ()=>{
 	console.log(`started on port ${port}`);
 });
