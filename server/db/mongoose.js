@@ -10,6 +10,6 @@ let db = {
 mongoose.connect(db.mlab || db.localhost);
 //mongoose.connect(db.mlab || db.localhost);
 mongoose.Promise= global.Promise;
-mongoose.connect(url);
+//mongoose.connect(url);
 
 module.exports = {mongoose};
