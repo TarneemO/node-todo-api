@@ -2,8 +2,9 @@
 //validation: http://mongoosejs.com/docs/validation.html
 
 var mongoose = require('mongoose');
+var url = 'mongodb://Tarneem:1201201200@ds149382.mlab.com:49382/todos' || 'mongodb://localhost:27017/TodoApp' 
 
 mongoose.Promise= global.Promise;
-mongoose.connect('mongodb://Tarneem:1201201200@ds149382.mlab.com:49382/todos' || 'mongodb://localhost:27017/TodoApp/todos');
+mongoose.connect(url);
 
 module.exports = {mongoose};
