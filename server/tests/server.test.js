@@ -1,3 +1,4 @@
+const _= require('lodash');
 const expect = require('expect');
 const request = require('supertest');
 const {ObjectID} = require('mongodb');
@@ -12,7 +13,9 @@ const todos = [{
     text: 'First test todo'
 }, {
     _id: new ObjectID(),
-    text:'seond test todo'
+    text:'seond test todo',
+    completed: true,
+    completedAt: 333
 }];
 
 beforeEach((done) =>{
@@ -129,7 +132,7 @@ describe('DELETE /todos/:id', () =>{
        
       });
     });
-
+/*
 it('should return 404 if object id is not found', (done) =>{
 var hexId = new ObjectID().toHexString();
         request(app)
@@ -137,10 +140,61 @@ var hexId = new ObjectID().toHexString();
         .expect(404)
         .end(done);
     });
+*/
 it('should return 404 if object id is invalid', (done) =>{
 request(app)
         .delete('/todos/595be')
         .expect(404)
         .end(done);
     });
+});
+
+describe('PATCH /todo/:id', () =>{
+it('should update the todo', (done) =>{
+    //id of first item
+    var hexId = todos[0]._id.toHexString();
+    var text = "new text1";
+    request(app)
+    .patch(`/todos/${hexId}`)
+    .send({
+        completed: true,
+        text //E6 format as it is same as above
+    })
+    .expect(200)
+    .expect((res) =>{
+        expect(res.body.todo.text).toBe(text);
+        expect(res.body.todo.completed).toBe(true);
+        expect(res.body.todo.completedAt).toBeA('number');
+    })
+    .end(done);
+    
+    
+    });
+    
+
+it('should clear completedAt when todo is not completed', (done) =>{
+//id of secnd doc
+var hexId = todos[1]._id.toHexString();
+var text = "new text 2";
+request(app)
+//update text, set completed to false
+.patch(`/todos/${hexId}`)
+.send({
+        completed: false,
+        text //E6 format as it is same as above
+    })
+.expect(200)
+.expect((res) => {
+    expect(res.body.todo.text).toBe(text);
+    expect(res.body.todo.completed).toBe(false);
+    expect(res.body.todo.completedAt).toNotExist();
+})
+.end(done);
+//200
+//text is changed, check completed is false, completedAt is null 
+//use .toNotExist
+
+});
+
+
 });
