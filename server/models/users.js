@@ -58,6 +58,26 @@ return user.save().then(() =>{
 	return token;
 });
 };
+
+UserSchema.statics.findByToken = function (token){
+var User = this; //calling the model
+var decoded;  //from hashing.js file
+try{
+decoded = jwt.verify(token, 'abc123');
+} catch(e){
+ // return new Promise((resolve, reject) =>{
+  //	reject(); });
+  //simpler return:
+  return Promise.reject();
+  
+}
+//for success decoding:
+return User.findOne({
+'_id': decoded._id,
+'tokens.token': token,
+'tokens.access': 'auth'
+});
+};
 //user model: 
 var Users = mongoose.model('Users', UserSchema);
 

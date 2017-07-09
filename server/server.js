@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
 var {Users} = require('./models/users');
-
+var {authenticate} = require('./middleware/authenticate');
 var app = express();
 //for heroku setup:
 var port = process.env.PORT || 3000;
@@ -119,6 +119,10 @@ app.post('/users', (req, res) =>{
 	})
 });
 
+//private route using authenticate file:
+app.get('/users/me', authenticate, (req, res) =>{
+res.send(req.user);
+});
 app.listen(port, ()=>{
 	console.log(`started on port ${port}`);
 });
