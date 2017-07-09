@@ -4,7 +4,7 @@
 var mongoose = require('mongoose');
 mongoose.Promise= global.Promise;
 module.exports = {mongoose};
-process.env.MONGODB_URI = 'mongodb://Tarneem:1201201200@ds149382.mlab.com:49382/todos';
+//process.env.MONGODB_URI = 'mongodb://Tarneem:1201201200@ds149382.mlab.com:49382/todos';
 //var url = 'mongodb://Tarneem:1201201200@ds149382.mlab.com:49382/todos' || 'mongodb://localhost:27017/TodoApp' 
 db = {
   localhost: 'mongodb://localhost:27017/TodoApp',

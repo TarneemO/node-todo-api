@@ -102,6 +102,23 @@ if(!ObjectID.isValid(id)){
 	});
 });
 
+//POST /users
+//create new user route:
+app.post('/users', (req, res) =>{
+	var body = _.pick(req.body, ['email', 'password']);
+    var user = new Users(body);
+
+    
+	user.save().then(() =>{
+		return user.generateAuthToken();
+	}).then((token) =>{
+		//user value is = line 109
+		res.header('x-auth', token).send(user);
+	}).catch((e) =>{
+		res.status(400).send(e);
+	})
+});
+
 app.listen(port, ()=>{
 	console.log(`started on port ${port}`);
 });
