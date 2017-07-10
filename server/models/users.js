@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const bcrypt = require('bcryptjs');
+
 //store user properties:
 var UserSchema = new mongoose.Schema({
 	email: {
@@ -78,6 +80,27 @@ return User.findOne({
 'tokens.access': 'auth'
 });
 };
+
+UserSchema.pre('save', function (next){
+var user = this; 
+
+if(user.isModified('password')){
+	//password is modified
+	//user.password
+	
+	bcrypt.genSalt(10, (err, salt) =>{
+	bcrypt.hash(user.password, salt, (err, hash) =>{
+//overwrite plain password with hashed one:
+user.password = hash;
+next();
+	});
+	});
+
+
+} else{
+next();
+}
+});
 //user model: 
 var Users = mongoose.model('Users', UserSchema);
 
@@ -91,5 +114,6 @@ newUser.save().then((doc) =>{
  }, (e) =>{
  	console.log('unable to save todo',e);
  });*/
+
 
 module.exports = {Users};

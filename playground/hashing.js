@@ -1,4 +1,21 @@
+//npm bcryptjs for more info
+const {SHA256} = require('crypto-js');
 const jwt =require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+
+var password = '123abc!';
+/*
+bcrypt.genSalt(10, (err, salt) =>{
+	bcrypt.hash(password, salt, (err, hash) =>{
+console.log(hash);
+	});
+});*/
+
+var hasedPassword = '$2a$10$nOJvKxtsOfiybK3Q.entqu6/ACzxqUqBtp3nxdd0g3d8p4mtlgScy';
+bcrypt.compare(password, hasedPassword, (err, res) =>{
+	console.log(res);
+})
+/*
 
 var data = {
 	id: 10
@@ -32,4 +49,4 @@ if(resultHash === token.hash){
 }else{
 	console.log('Data was change. Dont trust');
 }
-*/
+*/ 
