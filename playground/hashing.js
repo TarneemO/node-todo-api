@@ -14,7 +14,7 @@ console.log(hash);
 var hasedPassword = '$2a$10$nOJvKxtsOfiybK3Q.entqu6/ACzxqUqBtp3nxdd0g3d8p4mtlgScy';
 bcrypt.compare(password, hasedPassword, (err, res) =>{
 	console.log(res);
-})
+});
 /*
 
 var data = {
