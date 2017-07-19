@@ -15,6 +15,9 @@ db = {
 //mongoose.connect('mongodb://Tarneem:1201201200@ds149382.mlab.com:49382/todos' || 'mongodb://localhost:27017/TodoApp' );
 mongoose.connect(process.env.MONGODB_URI);
 */
+
+
+//from solution on Udemy:
 var mongoose = require('mongoose');
 db = {
   localhost: 'mongodb://localhost:27017/TodoApp',
@@ -23,5 +26,4 @@ db = {
 mongoose.connect(db.mlab || db.localhost);
 mongoose.Promise= global.Promise;
 module.exports = {mongoose};
-
 
