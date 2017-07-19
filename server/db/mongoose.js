@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGODB_URI);
 var mongoose = require('mongoose');
 db = {
   localhost: 'mongodb://localhost:27017/TodoApp',
- mlab: MONGODB_URI
+ mlab: process.env.MONGODB_URI
 }; 
 mongoose.connect(db.mlab || db.localhost);
 mongoose.Promise= global.Promise;
