@@ -81,6 +81,31 @@ return User.findOne({
 });
 };
 
+//to verify email and password of login user
+
+UserSchema.statics.findByCredentials = function (email, password){
+var User = this;
+//find the existing email
+return User.findOne({email}).then((user) =>{
+	if(!user){
+		return Promise.reject();
+	}
+return new Promise((resolve, reject) =>{
+	//to compare hashed password of the password and the plain password entered
+	bcrypt.compare(password,user.password, (err, res) =>{
+		if(res){
+			resolve(user);
+		}else {
+			reject();
+		}
+});
+		Promise.reject();
+	//use bcrypt.compare to compare password and user.password
+	//if correct call resolve
+	//if false call reject method
+});
+});
+};
 UserSchema.pre('save', function (next){
 var user = this; 
 
