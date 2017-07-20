@@ -47,6 +47,7 @@ var userObject = user.toObject();
 return _.pick(userObject, ['_id', 'email'])
 
 };
+
 //model method: User ex: findByToken & instence method: user ex: user.generateAuthToken
 //instance methods: 
 UserSchema.methods.generateAuthToken = function () {
@@ -59,6 +60,17 @@ user.tokens.push({access, token});
 return user.save().then(() =>{
 	return token;
 });
+};
+
+UserSchema.methods.removeToken = function (token){
+var user = this;
+return user.update({
+//remove item from array using $pull
+	$pull: {
+			tokens: {token}
+	}
+});
+
 };
 
 UserSchema.statics.findByToken = function (token){

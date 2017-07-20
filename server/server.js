@@ -139,7 +139,15 @@ res.status(400).send();
 });
 });
 
-
+//to logout user by deleting token
+app.delete('/users/me/token', authenticate, (req, res) =>{
+//to remove token:
+req.user.removeToken(req.token).then(() =>{
+	res.status(200).send();
+}, ()=>{
+	res.status(400).send();
+});
+});
 
 
 
