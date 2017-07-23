@@ -13,8 +13,9 @@ db = {
 }; 
 //mongoose.connect(db.mlab);
 //mongoose.connect('mongodb://Tarneem:1201201200@ds149382.mlab.com:49382/todos' || 'mongodb://localhost:27017/TodoApp' );
-mongoose.connect(process.env.MONGODB_URI);
-
+//mongoose.connect(process.env.MONGODB_URI);
+//trick to make localhost working:
+mongoose.connect(db.localhost);
 
 /*
 //from solution on Udemy:

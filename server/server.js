@@ -13,10 +13,12 @@ var app = express();
 var port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
-app.post('/todos', (req, res)=>{
+
+app.post('/todos', authenticate, (req, res)=>{
 //take info from user;
 var todo = new Todo({
-	text: req.body.text
+	text: req.body.text,
+	_creator: req.user._id
 });
 todo.save().then((doc)=>{
 res.send(doc);
@@ -26,8 +28,10 @@ res.status(400).send(e);
 });
 
 //to get all todos:
-app.get('/todos', (req, res) =>{
-	Todo.find().then((todos) =>{
+app.get('/todos', authenticate, (req, res) =>{
+	Todo.find({
+		_creator: req.user._id
+	}).then((todos) =>{
 		res.send({todos});
 	}, (e) =>{
 		res.status(400).send(e);
@@ -35,7 +39,7 @@ app.get('/todos', (req, res) =>{
 });
 
 //to get specific todo:
-app.get('/todos/:id', (req, res) =>{
+app.get('/todos/:id', authenticate, (req, res) =>{
 	var id = req.params.id;
 
 
@@ -44,7 +48,10 @@ if(!ObjectID.isValid(id)){
 	return res.status(404).send();}
 	//if not valid: 404 error messege - send back empty send()
 	
-Todo.findById(id).then((todo) =>{
+Todo.findOne({
+	_id: id,
+	_creator: req.user._id
+}).then((todo) =>{
 	if(!todo){
 		return res.status(404).send();
 	} 
@@ -57,14 +64,17 @@ Todo.findById(id).then((todo) =>{
 //error case: send 400 - send empty 
 });
 //to create delete route:
-app.delete('/todos/:id', (req, res) =>{
+app.delete('/todos/:id', authenticate, (req, res) =>{
 	//get id
-	var idv = req.params.id;
+	var id = req.params.id;
 //validation and send 404 for error
-if(!ObjectID.isValid(idv)){
+if(!ObjectID.isValid(id)){
 	return res.status(404).send();}
 //function of removebyid, for error respose to send 400 with empty body
-Todo.findByIdAndRemove(idv).then((todo) =>{
+Todo.findOneAndRemove({
+_id:id,
+_creator: req.user._id
+}).then((todo) =>{
 	if (!{todo}){
 		return res.status(404).send();
 	}
