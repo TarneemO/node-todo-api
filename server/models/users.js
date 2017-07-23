@@ -111,10 +111,7 @@ return new Promise((resolve, reject) =>{
 			reject();
 		}
 });
-		Promise.reject();
-	//use bcrypt.compare to compare password and user.password
-	//if correct call resolve
-	//if false call reject method
+	
 });
 });
 };
